@@ -1,0 +1,40 @@
+cqlsh> create keyspace library  with replication = { 'class' : 'SimpleStrategy','replication_factor':1};
+cqlsh> use library;
+cqlsh:library> create table library_info( id int, counter_val counter, stud_name text, book_name text, book_id int, issue_date timestamp,primary key(id,stud_name,book_name,book_id,issue_date));
+cqlsh:library> update library_info SET counter_val = counter_val +1 where id = 1 and stud_name = 'Akanksha' and book_name = 'DBMS' and book_id = 121 and issue_date='2017-10-08';
+cqlsh:library> update library_info SET counter_val = counter_val +1 where id = 3 and stud_name = 'Akshay' and book_name = 'BDA' and book_id = 112 and issue_date='2011-12-20';
+cqlsh:library> update library_info SET counter_val = counter_val +1 where id = 5 and stud_name = 'Akshat' and book_name = 'Java' and book_id = 114 and issue_date='2009-08-27';
+cqlsh:library> update library_info SET counter_val = counter_val +1 where id = 10 and stud_name = 'Akash' and book_name = 'Operating system' and book_id = 118 and issue_date='2005-12-03';
+cqlsh:library> select * from library_info;
+
+ id | stud_name | book_name        | book_id | issue_date                      | counter_val
+----+-----------+------------------+---------+---------------------------------+-------------
+  5 |    Akshat |             Java |     114 | 2009-08-26 18:30:00.000000+0000 |           1
+ 10 |     Akash | Operating system |     118 | 2005-12-02 18:30:00.000000+0000 |           1
+  1 |  Akanksha |             DBMS |     121 | 2017-10-07 18:30:00.000000+0000 |           1
+  3 |    Akshay |              BDA |     112 | 2011-12-19 18:30:00.000000+0000 |           1
+
+(4 rows)
+cqlsh:library> update library_info SET counter_val = counter_val +1 where id = 3 and stud_name = 'Akshay' and book_name = 'BDA' and book_id = 112 and issue_date='2011-12-20';
+cqlsh:library> select * from library_info where counter_val = 2 allow filtering;
+
+ id | stud_name | book_name | book_id | issue_date                      | counter_val
+----+-----------+-----------+---------+---------------------------------+-------------
+  3 |    Akshay |       BDA |     112 | 2011-12-19 18:30:00.000000+0000 |           2
+
+(1 rows)
+cqlsh:library> copy employee_info(id,counter_val,stud_name,book_name,book_id,issue_date) to '/home/bmsce/Desktop/week2_library_data.csv';
+Column family 'employee_info' not found
+cqlsh:library> copy library_info(id,counter_val,stud_name,book_name,book_id,issue_date) to '/home/bmsce/Desktop/week2_library_data.csv';
+Using 11 child processes
+
+Starting copy of library.library_info with columns [id, counter_val, stud_name, book_name, book_id, issue_date].
+Processed: 4 rows; Rate:      24 rows/s; Avg. rate:      24 rows/s
+4 rows exported to 1 files in 0.174 seconds.
+cqlsh:library> copy library_info(id,counter_val,stud_name,book_name,book_id,issue_date) from '/home/bmsce/Desktop/week2_library_data.csv';
+Using 11 child processes
+
+Starting copy of library.library_info with columns [id, counter_val, stud_name, book_name, book_id, issue_date].
+Processed: 4 rows; Rate:       7 rows/s; Avg. rate:      10 rows/s
+4 rows imported from 1 files in 0.399 seconds (0 skipped).
+cqlsh:library> 
