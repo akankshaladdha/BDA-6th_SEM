@@ -1,0 +1,4 @@
+Hello how are you 
+Hadoop in action
+Hello world 
+are you a human ?
